@@ -39,11 +39,8 @@
                 <div class="grid-productos">
                     <?php foreach ($catalogo as $prod): ?>
                         <div class="tarjeta-producto">
-                            <div class="producto-icono">
-                                <?php 
-                                $iconos = ['creatina'=>'⚡', 'proteina'=>'💪', 'preentreno'=>'🔥', 'bcaas'=>'💊', 'vitaminas'=>'🥗', 'barritas'=>'🍫'];
-                                echo $iconos[$prod['id']] ?? '📦'; 
-                                ?>
+                            <div class="producto-imagen-wrapper">
+                                <img src="assets/img/productos/<?php echo $prod['id']; ?>.png" alt="<?php echo $prod['id']; ?>" class="producto-img">
                             </div>
                             <h3><?php echo $texts[$prod['id']] ?? ucfirst($prod['id']); ?></h3>
                             <p class="desc"><?php echo $texts[$prod['id'].'_desc'] ?? ''; ?></p>
