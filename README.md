@@ -1,4 +1,4 @@
-# Fortafyt Gym Platform
+# Fortafyt Gym 
 
 ![Fortafyt Banner]
 
