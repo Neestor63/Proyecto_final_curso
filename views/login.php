@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Vista de la página de inicio de sesión -->
 <html lang="es">
 
 <head>

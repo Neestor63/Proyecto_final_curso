@@ -1,4 +1,5 @@
 <?php
+// Configuración y conexión a la base de datos.
 class Database {
     private $host = "localhost";
     private $db_name = "proyecto_reservas";

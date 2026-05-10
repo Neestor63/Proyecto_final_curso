@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Vista de la tienda online con catálogo de productos y carrito de compras -->
 <html lang="es">
 
 <head>

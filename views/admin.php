@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Vista del panel de administración para gestionar salas y usuarios -->
 <html lang="es">
 
 <head>

@@ -1,4 +1,5 @@
 <?php
+// Archivo principal de enrutamiento y punto de entrada de la aplicación.
 session_start();
 
 $idioma = $_COOKIE['idioma'] ?? 'es';

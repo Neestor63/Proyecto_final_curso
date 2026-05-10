@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Vista principal del usuario con acceso a reservas, QR y calculadora IMC -->
 <html lang="es">
 
 <head>

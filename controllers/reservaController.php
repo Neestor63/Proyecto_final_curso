@@ -1,4 +1,5 @@
 <?php
+// Controlador para la gestión de las reservas y salas.
 require_once 'models/reservaModel.php';
 
 class ReservaController
@@ -12,11 +13,13 @@ class ReservaController
         $this->model = new ReservaModel($db);
     }
 
+    // Obtiene todas las salas disponibles.
     public function listarSalas()
     {
         return $this->model->obtenerSalas();
     }
 
+    // Crea una nueva reserva para un usuario específico.
     public function hacerReserva($id_usuario, $id_sala, $fecha, $hora)
     {
         if (!empty($id_sala) && !empty($fecha) && !empty($hora)) {
@@ -25,16 +28,19 @@ class ReservaController
         return false;
     }
 
+    // Devuelve el historial de reservas de un usuario.
     public function listarMisReservas($id_usuario)
     {
         return $this->model->obtenerReservasUsuario($id_usuario);
     }
 
+    // Cancela una reserva existente si pertenece al usuario.
     public function cancelarReserva($id_reserva, $id_usuario)
     {
         return $this->model->eliminarReserva($id_reserva, $id_usuario);
     }
 
+    // Permite al administrador crear una nueva sala.
     public function crearNuevaSala($nombre) {
         if (empty($nombre)) {
             return false;
@@ -48,6 +54,7 @@ class ReservaController
         return $stmt->execute();
     }
 
+    // Permite al administrador eliminar una sala del sistema.
     public function borrarSala($id) {
         if (empty($id)) {
             return false;

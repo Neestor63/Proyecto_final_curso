@@ -1,4 +1,5 @@
 <?php
+// Controlador principal para manejar acciones relacionadas con usuarios.
 require_once 'models/usuarioModel.php';
 
 class UsuarioController
@@ -12,6 +13,7 @@ class UsuarioController
         $this->model = new UsuarioModel($db);
     }
 
+    // Registra un nuevo usuario en la base de datos.
     public function crearUsuario($nombre, $email, $password)
     {
         if (!empty($nombre) && !empty($email) && !empty($password)) {
@@ -20,6 +22,7 @@ class UsuarioController
         return false;
     }
 
+    // Inicia sesión validando credenciales y creando variables de sesión.
     public function iniciarSesion($email, $password)
     {
         $usuario = $this->model->login($email);
@@ -32,6 +35,7 @@ class UsuarioController
         return false;
     }
 
+    // Obtiene una lista de todos los usuarios registrados.
     public function listarTodos()
     {
         $sql = "SELECT id, nombre, email, rol FROM usuarios";
@@ -42,6 +46,7 @@ class UsuarioController
         return $resultado->fetch_all(MYSQLI_ASSOC);
     }
 
+    // Elimina un usuario por su ID, evitando auto-eliminación.
     public function eliminarUsuario($id)
     {
         if ($id == $_SESSION['usuario_id']) return false;
@@ -52,10 +57,12 @@ class UsuarioController
         return $stmt->execute();
     }
 
+    // Recupera la información completa de un usuario.
     public function obtenerUsuario($id) {
         return $this->model->obtenerPorId($id);
     }
 
+    // Calcula y guarda el Índice de Masa Corporal (IMC).
     public function guardarIMC($id, $peso, $altura) {
         if ($peso > 0 && $altura > 0) {
             if ($altura > 3) {
@@ -68,6 +75,7 @@ class UsuarioController
         return false;
     }
 
+    // Sube y guarda de forma segura una imagen de perfil del usuario.
     public function subirFoto($id, $fileArray) {
         if (isset($fileArray) && $fileArray['error'] === UPLOAD_ERR_OK) {
             $fileTmpPath = $fileArray['tmp_name'];

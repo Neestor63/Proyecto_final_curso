@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Vista de la página de registro de nuevos usuarios -->
 <html lang="es">
 
 <head>
