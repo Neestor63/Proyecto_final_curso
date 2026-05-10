@@ -8,7 +8,6 @@ class UsuarioModel {
     }
 
     public function registrar($nombre, $email, $password) {
-        // Encriptamos la contraseña por seguridad
         $pw_hash = password_hash($password, PASSWORD_BCRYPT);
         $query = "INSERT INTO " . $this->table . " (nombre, email, password) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($query);

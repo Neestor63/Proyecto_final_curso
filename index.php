@@ -24,16 +24,13 @@ $db = $database->getConnection();
 $usuarioCtrl = new UsuarioController($db);
 $reservaCtrl = new ReservaController($db);
 
-// 4. ENRUTADOR (Switch)
 $action = $_GET['action'] ?? 'login';
 
 switch ($action) {
-    // --- NUEVO CASO PARA IDIOMA (Para evitar el Not Found) ---
     case 'cambiar_idioma':
         if (isset($_GET['lang'])) {
             setcookie('idioma', $_GET['lang'], time() + (86400 * 30), "/");
         }
-        // Volver a la página anterior
         $referer = $_SERVER['HTTP_REFERER'] ?? 'index.php?action=dashboard';
         header("Location: " . $referer);
         exit();
