@@ -14,6 +14,9 @@
         <h2 style="font-size: 1.2rem; font-weight: 400; color: var(--text-muted); margin-bottom: 30px;">
             <?php echo $texts['registro_titulo'] ?? 'REGISTRO'; ?>
         </h2>
+        <?php if (isset($error_registro)): ?>
+            <p style="color: var(--accent-red); margin-bottom: 15px; font-weight: 600;"><?php echo htmlspecialchars($error_registro); ?></p>
+        <?php endif; ?>
         <form action="index.php?action=registrar" method="POST">
             <input type="text" name="nombre" placeholder="<?php echo $texts['nombre_placeholder'] ?? 'Nombre completo'; ?>" required>
             <input type="email" name="email" placeholder="<?php echo $texts['email_placeholder'] ?? 'Correo electrónico'; ?>" required>

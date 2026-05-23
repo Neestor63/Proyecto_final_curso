@@ -17,6 +17,9 @@ class UsuarioController
     public function crearUsuario($nombre, $email, $password)
     {
         if (!empty($nombre) && !empty($email) && !empty($password)) {
+            if ($this->model->login($email)) {
+                return 'exists';
+            }
             return $this->model->registrar($nombre, $email, $password);
         }
         return false;
@@ -64,13 +67,15 @@ class UsuarioController
 
     // Calcula y guarda el Índice de Masa Corporal (IMC).
     public function guardarIMC($id, $peso, $altura) {
-        if ($peso > 0 && $altura > 0) {
+        if ($peso > 0 && $peso <= 100 && $altura > 0) {
             if ($altura > 3) {
                 $altura = $altura / 100;
             }
-            $imc = $peso / ($altura * $altura);
-            $imc = round($imc, 2);
-            return $this->model->guardarIMC($id, $peso, $altura, $imc);
+            if ($altura <= 2.5) {
+                $imc = $peso / ($altura * $altura);
+                $imc = round($imc, 2);
+                return $this->model->guardarIMC($id, $peso, $altura, $imc);
+            }
         }
         return false;
     }

@@ -1,5 +1,10 @@
 {
     "bienvenido": "Bienvenido a Fortafyt",
+    "nav_clases": "Clases",
+    "nav_qr": "Pase QR",
+    "nav_imc": "Calculadora IMC",
+    "nav_tienda": "Tienda",
+    "nav_carrito": "Mi Carrito",
     "reservar": "Reservar Clase",
     "mis_reservas": "Mis Reservas",
     "panel_admin": "Panel Admin",
@@ -22,11 +27,13 @@
     "selecciona_clase": "Selecciona la Clase:",
     "elige_actividad": "-- Elige una actividad --",
     "fecha_ir": "Fecha para ir:",
+    "hora_ir": "Hora de la clase:",
     "confirmar_plaza": "Confirmar Mi Plaza",
     "mis_proximas_clases": "Mis Próximas Clases",
     "no_reservas": "Aún no tienes ninguna reserva. ¡Anímate a entrenar!",
     "tabla_actividad": "Actividad",
     "tabla_fecha": "Fecha",
+    "tabla_hora": "Hora",
     "tabla_accion": "Acción",
     "btn_cancelar": "Cancelar",
     "confirmar_cancelar": "¿Quieres cancelar esta clase?",
@@ -81,5 +88,6 @@
     "vitaminas": "Multivitamínico",
     "vitaminas_desc": "Refuerza tu sistema inmunológico y vitalidad.",
     "barritas": "Barritas Proteicas",
-    "barritas_desc": "Snack saludable y delicioso para llevar a cualquier parte."
+    "barritas_desc": "Snack saludable y delicioso para llevar a cualquier parte.",
+    "error_usuario_existe": "Ya hay un usuario en la base de datos."
 }

@@ -1,5 +1,10 @@
 {
     "bienvenido": "Welcome to Fortafyt",
+    "nav_clases": "Classes",
+    "nav_qr": "QR Pass",
+    "nav_imc": "BMI Calculator",
+    "nav_tienda": "Store",
+    "nav_carrito": "My Cart",
     "reservar": "Book a Class",
     "mis_reservas": "My Bookings",
     "panel_admin": "Admin Panel",
@@ -22,11 +27,13 @@
     "selecciona_clase": "Select a Class:",
     "elige_actividad": "-- Choose an activity --",
     "fecha_ir": "Date to go:",
+    "hora_ir": "Class time:",
     "confirmar_plaza": "Confirm My Spot",
     "mis_proximas_clases": "My Upcoming Classes",
     "no_reservas": "You don't have any bookings yet. Start training!",
     "tabla_actividad": "Activity",
     "tabla_fecha": "Date",
+    "tabla_hora": "Time",
     "tabla_accion": "Action",
     "btn_cancelar": "Cancel",
     "confirmar_cancelar": "Do you want to cancel this class?",
@@ -81,5 +88,6 @@
     "vitaminas": "Multivitamin",
     "vitaminas_desc": "Strengthens your immune system and vitality.",
     "barritas": "Protein Bars",
-    "barritas_desc": "Healthy and delicious snack to take anywhere."
+    "barritas_desc": "Healthy and delicious snack to take anywhere.",
+    "error_usuario_existe": "There is already a user in the database."
 }

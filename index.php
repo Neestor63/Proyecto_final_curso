@@ -39,9 +39,15 @@ switch ($action) {
 
     case 'registrar':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $usuarioCtrl->crearUsuario($_POST['nombre'], $_POST['email'], $_POST['password']);
-            header("Location: index.php?action=login");
-            exit();
+            $res = $usuarioCtrl->crearUsuario($_POST['nombre'], $_POST['email'], $_POST['password']);
+            if ($res === 'exists') {
+                $error_registro = $texts['error_usuario_existe'] ?? 'Ya hay un usuario en la base de datos.';
+            } elseif ($res) {
+                header("Location: index.php?action=login");
+                exit();
+            } else {
+                $error_registro = 'Error al crear la cuenta.';
+            }
         }
         include 'views/registro.php';
         break;
@@ -69,13 +75,31 @@ switch ($action) {
         include 'views/dashboard.php';
         break;
 
+    case 'qr':
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit();
+        }
+        $usuario_actual = $usuarioCtrl->obtenerUsuario($_SESSION['usuario_id']);
+        include 'views/qr.php';
+        break;
+
+    case 'imc':
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit();
+        }
+        $usuario_actual = $usuarioCtrl->obtenerUsuario($_SESSION['usuario_id']);
+        include 'views/imc.php';
+        break;
+
     case 'guardar_imc':
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['usuario_id'])) {
             $peso = floatval($_POST['peso'] ?? 0);
             $altura = floatval($_POST['altura'] ?? 0);
             $usuarioCtrl->guardarIMC($_SESSION['usuario_id'], $peso, $altura);
         }
-        header("Location: index.php?action=dashboard");
+        header("Location: index.php?action=imc");
         exit();
         break;
 
@@ -126,6 +150,27 @@ switch ($action) {
         include 'views/tienda.php';
         break;
 
+    case 'carrito':
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit();
+        }
+        $catalogo = [
+            'creatina' => ['id' => 'creatina', 'precio' => 19.99],
+            'proteina' => ['id' => 'proteina', 'precio' => 29.99],
+            'preentreno' => ['id' => 'preentreno', 'precio' => 24.99],
+            'bcaas' => ['id' => 'bcaas', 'precio' => 15.99],
+            'vitaminas' => ['id' => 'vitaminas', 'precio' => 12.99],
+            'barritas' => ['id' => 'barritas', 'precio' => 9.99]
+        ];
+        
+        if (!isset($_SESSION['carrito'])) {
+            $_SESSION['carrito'] = [];
+        }
+        
+        include 'views/carrito.php';
+        break;
+
     case 'add_cart':
         if (!isset($_SESSION['usuario_id'])) {
             header("Location: index.php?action=login");
@@ -136,9 +181,12 @@ switch ($action) {
             if (!isset($_SESSION['carrito'][$id_prod])) {
                 $_SESSION['carrito'][$id_prod] = 0;
             }
-            $_SESSION['carrito'][$id_prod]++;
+            if ($_SESSION['carrito'][$id_prod] < 20) {
+                $_SESSION['carrito'][$id_prod]++;
+            }
         }
-        header("Location: index.php?action=tienda");
+        $referer = $_SERVER['HTTP_REFERER'] ?? 'index.php?action=tienda';
+        header("Location: " . $referer);
         exit();
         break;
 
@@ -154,20 +202,21 @@ switch ($action) {
                 unset($_SESSION['carrito'][$id_prod]);
             }
         }
-        header("Location: index.php?action=tienda");
+        $referer = $_SERVER['HTTP_REFERER'] ?? 'index.php?action=carrito';
+        header("Location: " . $referer);
         exit();
         break;
 
     case 'empty_cart':
         $_SESSION['carrito'] = [];
-        header("Location: index.php?action=tienda");
+        header("Location: index.php?action=carrito");
         exit();
         break;
 
     case 'checkout':
         $_SESSION['carrito'] = [];
         $_SESSION['mensaje_compra'] = true;
-        header("Location: index.php?action=tienda");
+        header("Location: index.php?action=carrito");
         exit();
         break;
 

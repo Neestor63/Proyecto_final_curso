@@ -9,14 +9,18 @@
 </head>
 
 <body class="<?php echo (isset($_COOKIE['modo']) && $_COOKIE['modo'] === 'oscuro') ? 'dark-mode' : ''; ?>">
-    <div class="contenedor-principal">
-        <header>
-            <h1><?php echo $texts['titulo_admin'] ?? 'Panel de Control (ADMIN)'; ?></h1>
-            <div class="header-actions">
+    <div class="contenedor-principal" style="max-width: 1000px; margin: auto;">
+        <header class="main-header">
+            <div class="header-left">
+                <a href="index.php?action=dashboard" class="logo">FORTAFYT</a>
+                <span class="welcome-text" style="border-left: 1px solid var(--border-light); padding-left: 16px; font-weight: 800; color: var(--accent-red);"><?php echo $texts['titulo_admin'] ?? 'Panel de Control (ADMIN)'; ?></span>
+            </div>
+
+            <div class="header-right">
                 <div class="preferencias">
-                    <a href="index.php?action=cambiar_idioma&lang=es" class="btn-lang" title="Español">🇪🇸</a>
-                    <a href="index.php?action=cambiar_idioma&lang=en" class="btn-lang" title="English">🇬🇧</a>
-                    <button id="toggle-dark" class="btn-oscuro"><?php echo $texts['modo_oscuro'] ?? 'Modo Oscuro'; ?></button>
+                    <a href="index.php?action=cambiar_idioma&lang=es" class="btn-lang lang-es<?php echo ($idioma ?? 'es') === 'es' ? ' active' : ''; ?>" title="Español">ES</a>
+                    <a href="index.php?action=cambiar_idioma&lang=en" class="btn-lang lang-en<?php echo ($idioma ?? 'es') === 'en' ? ' active' : ''; ?>" title="English">EN</a>
+                    <button id="toggle-dark" class="btn-oscuro"><?php echo (isset($_COOKIE['modo']) && $_COOKIE['modo'] === 'oscuro') ? 'LIGHT' : 'DARK'; ?></button>
                 </div>
                 
                 <div class="acciones-usuario">

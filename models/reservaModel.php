@@ -32,11 +32,11 @@ class ReservaModel
     // Consulta las reservas futuras asociadas a un ID de usuario.
     public function obtenerReservasUsuario($id_usuario)
     {
-        $query = "SELECT r.id, r.fecha, s.nombre as sala_nombre 
+        $query = "SELECT r.id, r.fecha, r.hora, s.nombre as sala_nombre 
               FROM reservas r 
               JOIN salas s ON r.id_sala = s.id 
               WHERE r.id_usuario = ? 
-              ORDER BY r.fecha ASC";
+              ORDER BY r.fecha ASC, r.hora ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $id_usuario);

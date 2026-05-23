@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<!-- Vista principal del usuario con acceso a reservas, QR y calculadora IMC -->
+<!-- Vista independiente de la Calculadora de IMC -->
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $texts['titulo_dashboard'] ?? 'Gimnasio - Reservas'; ?></title>
+    <title>Fortafyt - <?php echo $texts['calc_imc_titulo'] ?? 'Calculadora IMC'; ?></title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body class="<?php echo (isset($_COOKIE['modo']) && $_COOKIE['modo'] === 'oscuro') ? 'dark-mode' : ''; ?>">
     <div class="contenedor-principal" style="max-width: 1000px; margin: auto;">
         <?php 
-        $active_action = $_GET['action'] ?? 'dashboard';
+        $active_action = $_GET['action'] ?? 'imc';
         $cart_count = 0;
         if (isset($_SESSION['carrito'])) {
             foreach ($_SESSION['carrito'] as $qty) {
@@ -77,69 +77,53 @@
             <input type="file" id="input-foto" name="foto_perfil" accept="image/*" onchange="document.getElementById('form-foto').submit();">
         </form>
 
-        <div class="dashboard-grid" style="margin-bottom: 30px;">
-            <section class="nueva-reserva" style="margin-bottom: 40px;">
-                <h2><?php echo $texts['reservar'] ?? 'Reservar una Clase'; ?></h2>
-                <form action="index.php?action=reservar" method="POST" class="form-reserva">
-                    <div class="campo">
-                        <label><?php echo $texts['selecciona_clase'] ?? 'Selecciona la Clase:'; ?></label>
-                        <select name="id_sala" required>
-                            <option value=""><?php echo $texts['elige_actividad'] ?? '-- Elige una actividad --'; ?></option>
-                            <?php if (!isset($salas) || !is_array($salas)) {
-                                $salas = [];
-                            } ?>
-                            <?php foreach ($salas as $sala): ?>
-                                <option value="<?php echo $sala['id']; ?>"><?php echo $sala['nombre']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+        <div style="max-width: 600px; margin: 20px auto;">
+            <!-- CALCULADORA IMC -->
+            <section class="calculadora-imc" style="background: var(--bg-section); border: 1px solid var(--border-light); padding: 40px 30px; border-radius: 24px; text-align: center; box-shadow: var(--shadow-main); backdrop-filter: var(--glass-blur);">
+                <h2 style="margin-bottom: 20px; font-size: 1.8rem;"><?php echo $texts['calc_imc_titulo'] ?? 'Calculadora IMC'; ?></h2>
+                <form action="index.php?action=guardar_imc" method="POST" style="margin-bottom: 15px;">
+                    <div style="display:flex; gap: 20px; justify-content: center; margin-bottom: 30px;">
+                        <div style="text-align: left; flex: 1;">
+                            <label style="font-size: 0.85rem; color: var(--text-muted);"><?php echo $texts['peso_kg'] ?? 'Peso (kg)'; ?></label>
+                            <input type="number" step="0.1" name="peso" min="1" max="100" value="<?php echo htmlspecialchars($usuario_actual['peso'] ?? ''); ?>" required style="width: 100%; padding: 14px 16px; border-radius: 12px;">
+                        </div>
+                        <div style="text-align: left; flex: 1;">
+                            <label style="font-size: 0.85rem; color: var(--text-muted);"><?php echo $texts['altura_m'] ?? 'Altura (m)'; ?></label>
+                            <input type="number" step="0.01" name="altura" min="0.5" max="2.5" value="<?php echo htmlspecialchars($usuario_actual['altura'] ?? ''); ?>" required style="width: 100%; padding: 14px 16px; border-radius: 12px;">
+                        </div>
                     </div>
-
-                    <div class="campo">
-                        <label><?php echo $texts['fecha_ir'] ?? 'Fecha para ir:'; ?></label>
-                        <input type="date" name="fecha" min="<?php echo date('Y-m-d'); ?>" required>
-                    </div>
-
-                    <div class="campo">
-                        <label><?php echo $texts['hora_ir'] ?? 'Hora de la clase:'; ?></label>
-                        <input type="time" name="hora" required>
-                    </div>
-
-                    <button type="submit" class="btn-reservar"><?php echo $texts['confirmar_plaza'] ?? 'Confirmar Mi Plaza'; ?></button>
+                    <button type="submit" class="btn-reservar" style="padding: 14px 40px; font-size: 0.95rem; font-weight: 700; border-radius: 12px;"><?php echo $texts['btn_calcular_imc'] ?? 'Calcular y Guardar'; ?></button>
                 </form>
+
+                <?php if (isset($usuario_actual['imc']) && floatval($usuario_actual['imc']) > 0): ?>
+                    <div style="margin-top: 35px; padding-top: 25px; border-top: 2px dashed var(--border-light);">
+                        <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;"><?php echo $texts['tu_imc'] ?? 'Tu IMC actual:'; ?></p>
+                        <?php 
+                            $imc = floatval($usuario_actual['imc']);
+                            $color = '#2ecc71'; // Saludable
+                            $etiqueta = $texts['imc_saludable'] ?? 'Saludable';
+                            
+                            if ($imc < 18.5) {
+                                $color = '#f1c40f'; // Bajo peso
+                                $etiqueta = $texts['imc_bajo'] ?? 'Bajo Peso';
+                            } elseif ($imc >= 25 && $imc < 30) {
+                                $color = '#e67e22'; // Sobrepeso
+                                $etiqueta = $texts['imc_sobrepeso'] ?? 'Sobrepeso';
+                            } elseif ($imc >= 30) {
+                                $color = '#e74c3c'; // Obesidad
+                                $etiqueta = $texts['imc_obesidad'] ?? 'Obesidad';
+                            }
+                        ?>
+                        <div style="font-size: 3.5rem; font-weight: 800; color: <?php echo $color; ?>; line-height: 1; text-shadow: 0 4px 12px <?php echo $color; ?>22;">
+                            <?php echo $imc; ?>
+                        </div>
+                        <div style="background: <?php echo $color; ?>22; color: <?php echo $color; ?>; padding: 10px 24px; border-radius: 50px; display: inline-block; font-size: 1.05rem; font-weight: 700; margin-top: 15px; box-shadow: 0 4px 15px <?php echo $color; ?>11;">
+                            <?php echo $etiqueta; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </section>
         </div>
-
-        <section class="mis-reservas" style="margin-top: 20px;">
-            <h2><?php echo $texts['mis_proximas_clases'] ?? 'Mis Próximas Clases'; ?></h2>
-            <?php if (empty($misReservas)): ?>
-                <p><?php echo $texts['no_reservas'] ?? 'Aún no tienes ninguna reserva. ¡Anímate a entrenar!'; ?></p>
-            <?php else: ?>
-                <table border="1" style="width: 100%; text-align: left;">
-                    <thead>
-                        <tr>
-                            <th><?php echo $texts['tabla_actividad'] ?? 'Actividad'; ?></th>
-                            <th><?php echo $texts['tabla_fecha'] ?? 'Fecha'; ?></th>
-                            <th><?php echo $texts['tabla_hora'] ?? 'Hora'; ?></th>
-                            <th><?php echo $texts['tabla_accion'] ?? 'Acción'; ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($misReservas as $res): ?>
-                            <tr>
-                                <td><?php echo $res['sala_nombre']; ?></td>
-                                <td><?php echo date('d/m/Y', strtotime($res['fecha'])); ?></td>
-                                <td><?php echo date('H:i', strtotime($res['hora'])); ?></td>
-                                <td>
-                                    <a href="index.php?action=cancelar&id=<?php echo $res['id']; ?>"
-                                        onclick="return confirm('<?php echo $texts['confirmar_cancelar'] ?? '¿Quieres cancelar esta clase?'; ?>')"
-                                        style="color: red;"><?php echo $texts['btn_cancelar'] ?? 'Cancelar'; ?></a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
-        </section>
     </div>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/preferencias.js"></script>

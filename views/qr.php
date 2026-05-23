@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<!-- Vista principal del usuario con acceso a reservas, QR y calculadora IMC -->
+<!-- Vista independiente del Pase QR de acceso -->
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $texts['titulo_dashboard'] ?? 'Gimnasio - Reservas'; ?></title>
+    <title>Fortafyt - <?php echo $texts['mi_qr'] ?? 'Pase QR'; ?></title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body class="<?php echo (isset($_COOKIE['modo']) && $_COOKIE['modo'] === 'oscuro') ? 'dark-mode' : ''; ?>">
     <div class="contenedor-principal" style="max-width: 1000px; margin: auto;">
         <?php 
-        $active_action = $_GET['action'] ?? 'dashboard';
+        $active_action = $_GET['action'] ?? 'qr';
         $cart_count = 0;
         if (isset($_SESSION['carrito'])) {
             foreach ($_SESSION['carrito'] as $qty) {
@@ -77,69 +77,17 @@
             <input type="file" id="input-foto" name="foto_perfil" accept="image/*" onchange="document.getElementById('form-foto').submit();">
         </form>
 
-        <div class="dashboard-grid" style="margin-bottom: 30px;">
-            <section class="nueva-reserva" style="margin-bottom: 40px;">
-                <h2><?php echo $texts['reservar'] ?? 'Reservar una Clase'; ?></h2>
-                <form action="index.php?action=reservar" method="POST" class="form-reserva">
-                    <div class="campo">
-                        <label><?php echo $texts['selecciona_clase'] ?? 'Selecciona la Clase:'; ?></label>
-                        <select name="id_sala" required>
-                            <option value=""><?php echo $texts['elige_actividad'] ?? '-- Elige una actividad --'; ?></option>
-                            <?php if (!isset($salas) || !is_array($salas)) {
-                                $salas = [];
-                            } ?>
-                            <?php foreach ($salas as $sala): ?>
-                                <option value="<?php echo $sala['id']; ?>"><?php echo $sala['nombre']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="campo">
-                        <label><?php echo $texts['fecha_ir'] ?? 'Fecha para ir:'; ?></label>
-                        <input type="date" name="fecha" min="<?php echo date('Y-m-d'); ?>" required>
-                    </div>
-
-                    <div class="campo">
-                        <label><?php echo $texts['hora_ir'] ?? 'Hora de la clase:'; ?></label>
-                        <input type="time" name="hora" required>
-                    </div>
-
-                    <button type="submit" class="btn-reservar"><?php echo $texts['confirmar_plaza'] ?? 'Confirmar Mi Plaza'; ?></button>
-                </form>
+        <div style="max-width: 500px; margin: 40px auto; text-align: center;">
+            <section class="acceso-qr" style="background: var(--bg-section); border: 1px solid var(--border-light); padding: 40px 30px; border-radius: 24px; text-align: center; box-shadow: var(--shadow-main); backdrop-filter: var(--glass-blur);">
+                <h2 style="margin-bottom: 10px; font-size: 1.8rem;"><?php echo $texts['mi_qr'] ?? 'Pase QR'; ?></h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 30px; font-weight: 500;">
+                    <?php echo $texts['qr_desc'] ?? 'Escanea este código en la entrada de las instalaciones.'; ?>
+                </p>
+                <div style="background: white; padding: 20px; border-radius: 20px; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=fortafyt_user_<?php echo $_SESSION['usuario_id']; ?>" alt="QR de Acceso" style="display: block; border-radius: 10px;">
+                </div>
             </section>
         </div>
-
-        <section class="mis-reservas" style="margin-top: 20px;">
-            <h2><?php echo $texts['mis_proximas_clases'] ?? 'Mis Próximas Clases'; ?></h2>
-            <?php if (empty($misReservas)): ?>
-                <p><?php echo $texts['no_reservas'] ?? 'Aún no tienes ninguna reserva. ¡Anímate a entrenar!'; ?></p>
-            <?php else: ?>
-                <table border="1" style="width: 100%; text-align: left;">
-                    <thead>
-                        <tr>
-                            <th><?php echo $texts['tabla_actividad'] ?? 'Actividad'; ?></th>
-                            <th><?php echo $texts['tabla_fecha'] ?? 'Fecha'; ?></th>
-                            <th><?php echo $texts['tabla_hora'] ?? 'Hora'; ?></th>
-                            <th><?php echo $texts['tabla_accion'] ?? 'Acción'; ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($misReservas as $res): ?>
-                            <tr>
-                                <td><?php echo $res['sala_nombre']; ?></td>
-                                <td><?php echo date('d/m/Y', strtotime($res['fecha'])); ?></td>
-                                <td><?php echo date('H:i', strtotime($res['hora'])); ?></td>
-                                <td>
-                                    <a href="index.php?action=cancelar&id=<?php echo $res['id']; ?>"
-                                        onclick="return confirm('<?php echo $texts['confirmar_cancelar'] ?? '¿Quieres cancelar esta clase?'; ?>')"
-                                        style="color: red;"><?php echo $texts['btn_cancelar'] ?? 'Cancelar'; ?></a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
-        </section>
     </div>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/preferencias.js"></script>
