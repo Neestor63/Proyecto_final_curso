@@ -20,7 +20,7 @@
         <form action="index.php?action=registrar" method="POST">
             <input type="text" name="nombre" placeholder="<?php echo $texts['nombre_placeholder'] ?? 'Nombre completo'; ?>" required>
             <input type="email" name="email" placeholder="<?php echo $texts['email_placeholder'] ?? 'Correo electrónico'; ?>" required>
-            <input type="password" name="password" id="pass-input" placeholder="<?php echo $texts['password_placeholder'] ?? 'Contraseña'; ?>" required>
+            <input type="password" name="password" id="pass-input" placeholder="<?php echo $texts['password_placeholder'] ?? 'Contraseña'; ?>" minlength="6" required>
             <div id="pass-mensaje" style="font-size: 0.8rem; margin-top: -15px; margin-bottom: 15px; text-align: left; height: 15px;"></div>
             <button type="submit" class="btn-reservar btn-full"><?php echo $texts['btn_crear_cuenta'] ?? 'CREAR CUENTA'; ?></button>
         </form>

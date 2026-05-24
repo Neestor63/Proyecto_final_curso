@@ -13,10 +13,13 @@ class UsuarioController
         $this->model = new UsuarioModel($db);
     }
 
-    // Registra un nuevo usuario en la base de datos.
+    // Registra un nuevo usuario en la base de datos con requisitos de seguridad.
     public function crearUsuario($nombre, $email, $password)
     {
         if (!empty($nombre) && !empty($email) && !empty($password)) {
+            if (strlen($password) < 6) {
+                return 'short_password';
+            }
             if ($this->model->login($email)) {
                 return 'exists';
             }

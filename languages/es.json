@@ -89,5 +89,6 @@
     "vitaminas_desc": "Refuerza tu sistema inmunológico y vitalidad.",
     "barritas": "Barritas Proteicas",
     "barritas_desc": "Snack saludable y delicioso para llevar a cualquier parte.",
-    "error_usuario_existe": "Ya hay un usuario en la base de datos."
+    "error_usuario_existe": "Ya hay un usuario en la base de datos.",
+    "error_contrasena_corta": "La contraseña debe tener al menos 6 caracteres."
 }

@@ -42,6 +42,8 @@ switch ($action) {
             $res = $usuarioCtrl->crearUsuario($_POST['nombre'], $_POST['email'], $_POST['password']);
             if ($res === 'exists') {
                 $error_registro = $texts['error_usuario_existe'] ?? 'Ya hay un usuario en la base de datos.';
+            } elseif ($res === 'short_password') {
+                $error_registro = $texts['error_contrasena_corta'] ?? 'La contraseña debe tener al menos 6 caracteres.';
             } elseif ($res) {
                 header("Location: index.php?action=login");
                 exit();

@@ -89,5 +89,6 @@
     "vitaminas_desc": "Strengthens your immune system and vitality.",
     "barritas": "Protein Bars",
     "barritas_desc": "Healthy and delicious snack to take anywhere.",
-    "error_usuario_existe": "There is already a user in the database."
+    "error_usuario_existe": "There is already a user in the database.",
+    "error_contrasena_corta": "Password must be at least 6 characters long."
 }
